@@ -1,0 +1,39 @@
+-- Roblox Auto Spacebar Clicker with Toggle GUI for Solara
+
+-- Variables
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local clicking = false
+local delay = 0.05  -- Adjust for speed (lower value = faster clicking)
+
+-- Create GUI
+local ScreenGui = Instance.new("ScreenGui")
+local ToggleButton = Instance.new("TextButton")
+
+-- GUI Settings
+ScreenGui.Parent = game.CoreGui
+ToggleButton.Parent = ScreenGui
+ToggleButton.Size = UDim2.new(0, 100, 0, 50)
+ToggleButton.Position = UDim2.new(0.5, -50, 0.5, -25)
+ToggleButton.Text = "Start"
+ToggleButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Toggle function for space bar clicking
+local function toggleClicking()
+    clicking = not clicking
+    ToggleButton.Text = clicking and "Stop" or "Start"
+end
+
+-- Event Listener for Toggle Button
+ToggleButton.MouseButton1Click:Connect(toggleClicking)
+
+-- Auto-clicking the space bar
+RunService.RenderStepped:Connect(function()
+    if clicking then
+        -- Simulate pressing the space key
+        keypress(0x20) -- 0x20 is the virtual key code for space bar
+        wait(delay)    -- Delay between each "click"
+        keyrelease(0x20) -- Release the space key
+    end
+end)
